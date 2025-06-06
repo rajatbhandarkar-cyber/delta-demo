@@ -30,10 +30,14 @@ main()
     console.log(err);
   });
 
+
+mongoose.connection.once("open", () => {
+  console.log(" Connected to database:", mongoose.connection.name);
+});
+
 async function main() {
     await mongoose.connect(dbUrl);
 }
-
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -98,6 +102,10 @@ app.use((req,res,next) =>{
 //     let registeredUser = await User.register(fakeUser,"helloworld");
 //     res.send(registeredUser);
 // });
+
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 
 app.use("/listings",listingRouter);
